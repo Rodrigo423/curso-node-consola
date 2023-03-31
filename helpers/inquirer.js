@@ -84,8 +84,66 @@ const leerInput = async(message)=>{
     return desc;
 }
 
+const confirmar = async(message) => {
+
+    const question = [
+        {
+            type: 'confirm',
+            name: 'ok',
+            message
+        }
+    ];
+
+    const {ok} = await inquirer.prompt(question);
+
+    return ok;
+
+}
+const borrarMenu = async(tareas) => {
+
+    let listadoTareas = [];
+
+    let i = 0;
+    tareas.listadoArr.forEach(tarea => {
+            
+        listadoTareas.push(
+            {
+                value: i.toString(),
+                name: `${(i+1).toString().green} ${tarea.desc}`
+            }
+        );
+
+        i++;
+    });
+
+    if(listadoTareas.length < 1){
+        return false;
+    }
+
+    let menuTareas = [
+        {
+            type: 'list',
+            name: 'opcion',
+            message: 'Lista de Tareas: ',
+            choices: listadoTareas
+        }
+    ];
+
+    console.clear();
+    console.log('=================='.green);
+    console.log(' Seleccione la opción a eliminar'.white);
+    console.log('==================\n'.green);
+
+    const {opcion} = await inquirer.prompt(menuTareas);
+
+    return +opcion;
+
+}
+
 module.exports = {
     inquirerMenu,
     pausa,
-    leerInput
+    leerInput,
+    borrarMenu,
+    confirmar
 }

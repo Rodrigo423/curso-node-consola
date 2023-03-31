@@ -1,10 +1,8 @@
 const Tarea = require('./tarea');
+require('colors');
 
 class Tareas{
 
-    //generalmente esto no es necesario ponerlo porque las propiedades
-    //se definen en el constructor, generalmente en jacvascript.
-        
     _listado = {};
 
     get listadoArr(){
@@ -21,6 +19,12 @@ class Tareas{
         this._listado = {}
     }
 
+    borrarTarea(index){
+
+        delete this._listado[this.listadoArr[index].id];
+        this.listadoArr.splice(index,1);
+    }
+
     crearTarea( desc='' ){
 
         const tarea = new Tarea(desc);
@@ -34,6 +38,54 @@ class Tareas{
         });
         
     }
+
+    listadoCompleto(){
+        let i = 1;
+        this.listadoArr.forEach(tarea => {
+            
+            
+            let toPrint = '';
+            const state = (tarea.completadoEn !== null) ? 'Completada'.green : 'Pendiente'.red;  
+
+            toPrint = toPrint+i.toString().green+'. '+tarea.desc+' :: '+state;
+
+            console.log("");
+            console.log(toPrint);
+            
+            i++;
+        });
+
+    }
+
+    listarPendientesCompletadas(flagCompletadas = true){
+        let i = 1;
+        this.listadoArr.forEach(tarea => {
+            
+            if(flagCompletadas){
+                if(tarea.completadoEn == null){
+                    return; 
+                }
+            }else{
+                if(tarea.completadoEn !== null){
+                    return; 
+                }
+            }
+
+            
+            let toPrint = '';
+            const state = (tarea.completadoEn !== null) ? 'Completada'.green : 'Pendiente'.red;  
+
+            toPrint = toPrint+i.toString().green+'. '+tarea.desc+' :: '+state;
+
+            console.log("");
+            console.log(toPrint);
+            
+            i++;
+        });
+
+
+    }
+
 }
 
 module.exports = Tareas;
